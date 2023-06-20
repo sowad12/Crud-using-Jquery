@@ -1,0 +1,85 @@
+﻿@model GameViewModel
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<div class="card">
+	<div class="card-title">
+		<h2>Create Game</h2>
+	</div>
+	<div class="card-body">
+
+		@Html.AntiForgeryToken()
+
+		 <div class="row">
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label>Name</label>
+					<input id="nameid"   class="form-control" />
+				</div>
+			</div>
+		</div>
+
+		  <div class="row">
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label>type</label>
+					<input id="typeid"   class="form-control" />
+				</div>
+			</div>
+		</div>
+
+
+
+		 <div class="row">
+			<div class="col-lg-6">
+				<div class="form-group" style="margin-top:10px">
+				   <a onclick="handlesave()" class="btn btn-success">Save</a> <a onclick="backtolist()" class="btn btn-success">Back To List</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+
+
+function backtolist() {
+	window.location.href = "/Game";
+}
+function handlesave(){
+	var nameData=$('#nameid').val();
+	var typeData=$('#typeid').val();
+	 var data = { 
+	name: nameData,
+	type: typeData
+  };
+
+   let elements=document.getElementsByName("__RequestVerificationToken")[0].value;
+	console.log(data);
+	console.log(elements);
+	  $.ajax({  
+		url: "/Game/Create",
+		 type: "POST", 
+		 headers: { 'RequestVerificationToken': elements },
+		data: JSON.stringify(data),  
+
+		contentType: "application/json",  
+		dataType: "json",  
+		success: function (result) {  
+			//console.log(data)
+		   console.log('User saved:', result);
+		   window.location.href = "/Game";
+		},  
+		error: function (errormessage) {  
+			alert('error');  
+		}
+	  });
+}
+</script>
+
